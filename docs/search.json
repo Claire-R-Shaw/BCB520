@@ -21,17 +21,24 @@
     "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
-    "objectID": "posts/Assignment 4/index.html",
-    "href": "posts/Assignment 4/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/Actual Hocky Project/Actual Hocky Project.html",
+    "href": "posts/Actual Hocky Project/Actual Hocky Project.html",
+    "title": "Actual Hocky Project",
     "section": "",
-    "text": "This is a post with executable code.\n\n1 + 1\n\n[1] 2"
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\nIndivdual.Skater &lt;- read.csv(\"SkaterIndividualstats.csv\")\nOnIce.Skater &lt;- read.csv(\"SkaterOnicestats.csv\")\nGoalie &lt;- read.csv(\"Goalies.csv\")\nIndividual.Skater.Rookie &lt;- read.csv(\"RookieSkaterindividual.csv\")\nOnIce.Skater.Rookie &lt;- read.csv(\"RookieSkaterOnIce.csv\")\nRookie.Goalie &lt;- read.csv(\"RookieGoalies.csv\")\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.4     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nLooking at xG Aginst\n\n# ggplot(filtered_data, aes(x = XGA, y = reorder(Player, XGA))) +\n#   geom_col(fill = \"blue\") +\n#   labs(\n#     x = \"XGA\",\n#     y = \"Player Name\",\n#     title = \"Expected Goals Against by Player\",\n#     subtitle = \"Filtered for TOI &gt; 1237\"\n#   ) +\n#   theme_minimal() +\n#   theme(\n#     panel.grid.major.y = element_blank(),\n#     panel.grid.minor = element_blank()\n#   )"
+  },
+  {
+    "objectID": "posts/Actual Hocky Project/Actual Hocky Project.html#quarto",
+    "href": "posts/Actual Hocky Project/Actual Hocky Project.html#quarto",
+    "title": "Actual Hocky Project",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\nIndivdual.Skater &lt;- read.csv(\"SkaterIndividualstats.csv\")\nOnIce.Skater &lt;- read.csv(\"SkaterOnicestats.csv\")\nGoalie &lt;- read.csv(\"Goalies.csv\")\nIndividual.Skater.Rookie &lt;- read.csv(\"RookieSkaterindividual.csv\")\nOnIce.Skater.Rookie &lt;- read.csv(\"RookieSkaterOnIce.csv\")\nRookie.Goalie &lt;- read.csv(\"RookieGoalies.csv\")\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.4     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nLooking at xG Aginst\n\n# ggplot(filtered_data, aes(x = XGA, y = reorder(Player, XGA))) +\n#   geom_col(fill = \"blue\") +\n#   labs(\n#     x = \"XGA\",\n#     y = \"Player Name\",\n#     title = \"Expected Goals Against by Player\",\n#     subtitle = \"Filtered for TOI &gt; 1237\"\n#   ) +\n#   theme_minimal() +\n#   theme(\n#     panel.grid.major.y = element_blank(),\n#     panel.grid.minor = element_blank()\n#   )"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "BCB520",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nMar 15, 2025\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMar 12, 2025\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 4\n\n\nMarks and Channels\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\nNo matching items"
+    "text": "Actual Hocky Project\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMar 12, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 4\n\n\nMarks and Channels\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\nNo matching items"
   }
 ]
