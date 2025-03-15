@@ -1,0 +1,17 @@
+{
+  "hash": "5c0c9eb67f227c305366917658a5df4e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Assignment 4\"\nsubtitle: Marks and Channels\nauthor: Claire Shaw\ndate: 2025-02-15\ncategory: Assignment\nimage: ~/Desktop/Cow.png.\ncode-fold: true\ncode-tools: true\ndiscription: An endeavor to enhance the representation of meat color, a* values, in a way that is visually appealing, more intuitive and just cooler.I will also show a confusing, hard to read visualization. Also just FYI I am using a* values, higher a* values = more red, lower a* values = less red. \n---\n\n\n### A little bit about the data\n\nIn the below figure I used a heat map to show how the color of fresh beef patties changes over time. Different antioxidants and amounts were added to each treatment group.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.4     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n\n```{.r .cell-code}\nlibrary(readxl)\nData4<- read.csv(\"Data4.csv\")\n```\n:::\n\n---\n### heatmap\n---\n\n\nThis example shows how it is hard to compare color when hue/luminescence is similar. enjoy :)\n\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(Data4,aes(x=day,y=trt,fill=a))+\n  geom_tile()+\n  scale_fill_gradient(low=\"brown\",high=\"red\")+\n  labs(\n    title = \"a* values across retail display\",\n    x = \"Day of Retail Display\",\n    y = \"a* (Reddness)\")+\n  theme_minimal()+\n  theme(\n    plot.title = element_text(hjust = 0.5))\n```\n\n::: {.cell-output-display}\n![](Good-vs.-bad-Assignment-4_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\nFigure 1: which one had more discoloration (is less red) Control on day 1 or 2.0& M on day 2?? Hard telling not knowing. We can see that Rosemary at 2.0% did prolong discoloration the best. \n\n\n\n### line graph \n\nThis is a better way to show a* vales over retail display.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(Data4,aes(x=day,y=a,color=trt))+\n  geom_line(linewidth=1.5)+\n  scale_color_manual(values=c(\"yellow\",\"orange\",\"darkgreen\",\"darkgreen\",\"hotpink\",\"red\"),name = \"Antioxidants\")+\n  labs(\n    title = \"a* values across retail display\",\n    x = \"Day of Retail Display\",\n    y = \"a* (Reddness)\"\n  )+\n  theme_minimal()+\n  theme(\n    plot.title = element_text(hjust = 0.5)\n  )\n```\n\n::: {.cell-output-display}\n![](Good-vs.-bad-Assignment-4_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\nFigure 2: Showing it like this makes it easier to follow, you can see clear separation between treatments. The green lines are the positive controls, red is the negative control. We are mostly interested in the yellow, orange and pink lines. ",
+    "supporting": [
+      "Good-vs.-bad-Assignment-4_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
