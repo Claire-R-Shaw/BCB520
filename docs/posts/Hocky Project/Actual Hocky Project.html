@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Claire Shaw">
+<meta name="dcterms.date" content="2025-03-16">
 
-<title>Actual Hocky Project – BCB520</title>
+<title>Hockey Project – BCB520</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -147,14 +115,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Actual Hocky Project</h1>
+      <h1 class="title">Hockey Project</h1>
                       </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Claire Shaw </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 16, 2025</p>
+      </div>
+    </div>
     
       
     </div>
@@ -171,46 +151,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<section id="vezina-trophy" class="level1">
+<h1>Vezina Trophy</h1>
+<section id="percentage-of-shots-against-that-were-saves-sv" class="level2">
+<h2 class="anchored" data-anchor-id="percentage-of-shots-against-that-were-saves-sv">Percentage of shots against that were saves (SV%)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Indivdual.Skater <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"SkaterIndividualstats.csv"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>OnIce.Skater <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"SkaterOnicestats.csv"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Goalies <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Goalies.csv"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Individual.Skater.Rookie <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"RookieSkaterindividual.csv"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>OnIce.Skater.Rookie <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"RookieSkaterOnIce.csv"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Rookie.Goalie <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"RookieGoalies.csv"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.4     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-</div>
-<p>Looking at SV%</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>filtered_goalies <span class="ot">&lt;-</span> Goalies <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(GP <span class="sc">&gt;=</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(SV.)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">20</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(filtered_goalies, <span class="fu">aes</span>(<span class="at">x =</span> SV., <span class="at">y =</span> <span class="fu">reorder</span>(Player, SV.), <span class="at">fill =</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Save Percentage"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Player Name"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: https://www.naturalstattrick.com/"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Individual Save Percentage"</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2024-2025 season stats as of March 4"</span>) <span class="sc">+</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -219,26 +164,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Top 5: Hellebuyck Vasilevskiy Thompson Blackwood Gustavsson</p>
-<p>Looking at Goals saved Above Average</p>
+<section id="top-5" class="level3">
+<h3 class="anchored" data-anchor-id="top-5">Top 5:</h3>
+<section id="hellebuyck" class="level4">
+<h4 class="anchored" data-anchor-id="hellebuyck">1. Hellebuyck</h4>
+</section>
+<section id="vasilevskiy" class="level4">
+<h4 class="anchored" data-anchor-id="vasilevskiy">2. Vasilevskiy</h4>
+</section>
+<section id="thompson" class="level4">
+<h4 class="anchored" data-anchor-id="thompson">3. Thompson</h4>
+</section>
+<section id="blackwood" class="level4">
+<h4 class="anchored" data-anchor-id="blackwood">4. Blackwood</h4>
+</section>
+<section id="gustavsson" class="level4">
+<h4 class="anchored" data-anchor-id="gustavsson">5. Gustavsson</h4>
+</section>
+</section>
+</section>
+<section id="goals-saved-above-average-gsaa" class="level2">
+<h2 class="anchored" data-anchor-id="goals-saved-above-average-gsaa">Goals Saved Above Average (GSAA)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>filtered_goalies <span class="ot">&lt;-</span> Goalies <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(GP <span class="sc">&gt;=</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(GSAA)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">20</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(filtered_goalies, <span class="fu">aes</span>(<span class="at">x =</span> GSAA, <span class="at">y =</span> <span class="fu">reorder</span>(Player, GSAA), <span class="at">fill =</span> <span class="st">"blue"</span>)) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Goals Saved Above Average"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Player Name"</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: https://www.naturalstattrick.com/"</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Individual Goals Saved Above Average"</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2024-2025 season stats as of March 4"</span>) <span class="sc">+</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -247,26 +194,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Top 5: Hellebuyck Vasilevskiy Blackwood Thompson Gustavsson</p>
-<p>Looking at high danger goals saved above average</p>
+<section id="top-5-1" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-1">Top 5:</h3>
+<section id="hellebuyck-1" class="level4">
+<h4 class="anchored" data-anchor-id="hellebuyck-1">1. Hellebuyck</h4>
+</section>
+<section id="vasilevskiy-1" class="level4">
+<h4 class="anchored" data-anchor-id="vasilevskiy-1">2. Vasilevskiy</h4>
+</section>
+<section id="blackwood-1" class="level4">
+<h4 class="anchored" data-anchor-id="blackwood-1">3. Blackwood</h4>
+</section>
+<section id="thompson-1" class="level4">
+<h4 class="anchored" data-anchor-id="thompson-1">4. Thompson</h4>
+</section>
+<section id="gustavsson-1" class="level4">
+<h4 class="anchored" data-anchor-id="gustavsson-1">5. Gustavsson</h4>
+</section>
+</section>
+</section>
+<section id="high-danger-goals-saves-above-average" class="level2">
+<h2 class="anchored" data-anchor-id="high-danger-goals-saves-above-average">High Danger Goals Saves Above Average</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>filtered_goalies <span class="ot">&lt;-</span> Goalies <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(GP <span class="sc">&gt;=</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(HDGSAA)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">20</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(filtered_goalies, <span class="fu">aes</span>(<span class="at">x =</span> HDGSAA, <span class="at">y =</span> <span class="fu">reorder</span>(Player, HDGSAA), <span class="at">fill =</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"HD Goals Saved Above Average"</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Player Name"</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: https://www.naturalstattrick.com/"</span>,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Individual HD Goal Saved Above Average"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2024-2025 season stats as of March 4"</span>) <span class="sc">+</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -275,54 +224,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Top 5: Hellebuyck Vasilevskiy Kochetkov Wolf Blackwood</p>
-<p>Now the hard part. What stats matters the most?</p>
+<section id="top-5-2" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-2">Top 5:</h3>
+<section id="hellebuyck-2" class="level4">
+<h4 class="anchored" data-anchor-id="hellebuyck-2">1. Hellebuyck</h4>
+</section>
+<section id="vasilevskiy-2" class="level4">
+<h4 class="anchored" data-anchor-id="vasilevskiy-2">2. Vasilevskiy</h4>
+</section>
+<section id="kochetkov" class="level4">
+<h4 class="anchored" data-anchor-id="kochetkov">3. Kochetkov</h4>
+</section>
+<section id="wolf" class="level4">
+<h4 class="anchored" data-anchor-id="wolf">4. Wolf</h4>
+</section>
+<section id="blackwood-2" class="level4">
+<h4 class="anchored" data-anchor-id="blackwood-2">5. Blackwood</h4>
+</section>
+</section>
+</section>
+<section id="lastly-to-look-at-them-all-together-and-compair" class="level2">
+<h2 class="anchored" data-anchor-id="lastly-to-look-at-them-all-together-and-compair">Lastly to look at them all together and compair</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Scale.Goalies <span class="ot">&lt;-</span> Goalies <span class="sc">%&gt;%</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(GP <span class="sc">&gt;</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale.SV. =</span> <span class="fu">scale</span>(SV.),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale.GSAA =</span> <span class="fu">scale</span>(GSAA),</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale.HDGSAA =</span> <span class="fu">scale</span>(HDGSAA),</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">composite.Score =</span> scale.SV. <span class="sc">+</span> scale.GSAA <span class="sc">+</span> scale.HDGSAA</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(composite.Score)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)  </span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>Scale.Goalies_long <span class="ot">&lt;-</span> Scale.Goalies <span class="sc">%&gt;%</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(scale.SV., scale.GSAA, scale.HDGSAA),</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"component"</span>,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">component =</span> <span class="fu">factor</span>(component, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"scale.HDGSAA"</span>, <span class="st">"scale.GSAA"</span>, <span class="st">"scale.SV."</span>)))</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Scale.Goalies_long, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Player, composite.Score), <span class="at">y =</span> value, <span class="at">fill =</span> component)) <span class="sc">+</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"scale.SV."</span> <span class="ot">=</span> <span class="st">"#FF7F0E"</span>, </span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"scale.GSAA"</span> <span class="ot">=</span> <span class="st">"#1F77B4"</span>,</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"scale.HDGSAA"</span> <span class="ot">=</span> <span class="st">"#D62728"</span>)) <span class="sc">+</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Player Name"</span>,</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Composite Score"</span>,</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Component"</span>,</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: https://www.naturalstattrick.com/"</span>,</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Top 10 Vezina Ranking"</span>,</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2024-2025 season stats as of March 4"</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -331,17 +254,273 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>My Final Ballot for the Vezina Award is …</p>
-<ol type="1">
-<li>Connor Hellebuyck</li>
-<li>Andrei Vasilevskiy</li>
-<li>Makenzie Blackwood</li>
-<li>Logan Thompson</li>
-<li>Filip Gustavsson</li>
-</ol>
-<p>I did choose Gustavsson over Wolf. Gustavsson beats wolf in SV and GSAA. While wold has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those.</p>
+</section>
+<section id="my-final-ballot-for-the-vezina-award-is" class="level2">
+<h2 class="anchored" data-anchor-id="my-final-ballot-for-the-vezina-award-is">My Final Ballot for the Vezina Award is …</h2>
+<section id="connor-hellebuyck" class="level3">
+<h3 class="anchored" data-anchor-id="connor-hellebuyck">1.Connor Hellebuyck</h3>
+</section>
+<section id="andrei-vasilevskiy" class="level3">
+<h3 class="anchored" data-anchor-id="andrei-vasilevskiy">2. Andrei Vasilevskiy</h3>
+</section>
+<section id="makenzie-blackwood" class="level3">
+<h3 class="anchored" data-anchor-id="makenzie-blackwood">3. Makenzie Blackwood</h3>
+</section>
+<section id="logan-thompson" class="level3">
+<h3 class="anchored" data-anchor-id="logan-thompson">4. Logan Thompson</h3>
+</section>
+<section id="filip-gustavsson" class="level3">
+<h3 class="anchored" data-anchor-id="filip-gustavsson">5. Filip Gustavsson</h3>
+<section id="i-did-choose-gustavsson-over-wolf.-gustavsson-beats-wolf-in-sv-and-gsaa.-while-wolf-has-higher-hdgsaa-i-think-sv-and-gsaa-are-more-important-and-wolf-was-ranked-7th-in-both-of-those." class="level6">
+<h6 class="anchored" data-anchor-id="i-did-choose-gustavsson-over-wolf.-gustavsson-beats-wolf-in-sv-and-gsaa.-while-wolf-has-higher-hdgsaa-i-think-sv-and-gsaa-are-more-important-and-wolf-was-ranked-7th-in-both-of-those.">I did choose Gustavsson over Wolf. Gustavsson beats wolf in SV% and GSAA. While Wolf has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those.</h6>
+</section>
+</section>
+</section>
+</section>
+<section id="hart-memorial-trophy" class="level1">
+<h1>Hart Memorial Trophy</h1>
+<section id="expected-goals-percentage" class="level2">
+<h2 class="anchored" data-anchor-id="expected-goals-percentage">Expected Goals Percentage</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="top-5-3" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-3">Top 5:</h3>
+<section id="jackson-blake" class="level4">
+<h4 class="anchored" data-anchor-id="jackson-blake">1. Jackson Blake</h4>
+</section>
+<section id="josh-doan" class="level4">
+<h4 class="anchored" data-anchor-id="josh-doan">2. Josh Doan</h4>
+</section>
+<section id="matthew-tkachuk" class="level4">
+<h4 class="anchored" data-anchor-id="matthew-tkachuk">3. Matthew Tkachuk</h4>
+</section>
+<section id="leon-draisaitl" class="level4">
+<h4 class="anchored" data-anchor-id="leon-draisaitl">4. Leon Draisaitl</h4>
+</section>
+<section id="victor-olofsson" class="level4">
+<h4 class="anchored" data-anchor-id="victor-olofsson">5. Victor Olofsson</h4>
+</section>
+</section>
+</section>
+<section id="percentage-of-total-corsi" class="level2">
+<h2 class="anchored" data-anchor-id="percentage-of-total-corsi">Percentage of total Corsi</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="top-5-4" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-4">Top 5:</h3>
+<section id="shayne-godtisbehertr" class="level4">
+<h4 class="anchored" data-anchor-id="shayne-godtisbehertr">1. Shayne Godtisbehertr</h4>
+</section>
+<section id="matthew-tkachuk-1" class="level4">
+<h4 class="anchored" data-anchor-id="matthew-tkachuk-1">2. Matthew Tkachuk</h4>
+</section>
+<section id="jackson-blake-1" class="level4">
+<h4 class="anchored" data-anchor-id="jackson-blake-1">3. Jackson Blake</h4>
+</section>
+<section id="jonathan-drouin" class="level4">
+<h4 class="anchored" data-anchor-id="jonathan-drouin">4. Jonathan Drouin</h4>
+</section>
+<section id="martin-necas" class="level4">
+<h4 class="anchored" data-anchor-id="martin-necas">5. Martin Necas</h4>
+</section>
+</section>
+</section>
+<section id="final-ballot-for-the-hart-memorial-is." class="level2">
+<h2 class="anchored" data-anchor-id="final-ballot-for-the-hart-memorial-is.">Final Ballot for the Hart Memorial is….</h2>
+<section id="jackson-black" class="level3">
+<h3 class="anchored" data-anchor-id="jackson-black">1. Jackson Black</h3>
+</section>
+<section id="matthew-tkachuk-2" class="level3">
+<h3 class="anchored" data-anchor-id="matthew-tkachuk-2">2. Matthew Tkachuk</h3>
+</section>
+<section id="shayne-godtisbehertr-1" class="level3">
+<h3 class="anchored" data-anchor-id="shayne-godtisbehertr-1">3. Shayne Godtisbehertr</h3>
+</section>
+<section id="leon-draisaitl-1" class="level3">
+<h3 class="anchored" data-anchor-id="leon-draisaitl-1">4. Leon Draisaitl</h3>
+</section>
+<section id="josh-doan-1" class="level3">
+<h3 class="anchored" data-anchor-id="josh-doan-1">5. Josh Doan</h3>
+</section>
+</section>
+</section>
+<section id="frank-j.-selke-trophy" class="level1">
+<h1>Frank J. Selke Trophy</h1>
+<section id="total-penalties" class="level2">
+<h2 class="anchored" data-anchor-id="total-penalties">Total Penalties</h2>
+<section id="in-my-mind-the-bewst-defensive-player-should-be-the-most-agresive-and-therefore-have-the-most-penalties" class="level3">
+<h3 class="anchored" data-anchor-id="in-my-mind-the-bewst-defensive-player-should-be-the-most-agresive-and-therefore-have-the-most-penalties">In my mind the bewst defensive player should be the most agresive and therefore have the most penalties</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="top-5-for-penalties" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-for-penalties">Top 5: for penalties</h3>
+<section id="brady-tkachuk" class="level4">
+<h4 class="anchored" data-anchor-id="brady-tkachuk">1. Brady Tkachuk</h4>
+</section>
+<section id="mathiew-oliver" class="level4">
+<h4 class="anchored" data-anchor-id="mathiew-oliver">2. Mathiew Oliver</h4>
+</section>
+<section id="a.j.-green" class="level4">
+<h4 class="anchored" data-anchor-id="a.j.-green">3. A.J. Green</h4>
+</section>
+<section id="brad-machand" class="level4">
+<h4 class="anchored" data-anchor-id="brad-machand">4. Brad Machand</h4>
+</section>
+<section id="sam-bennett" class="level4">
+<h4 class="anchored" data-anchor-id="sam-bennett">5. Sam Bennett</h4>
+</section>
+</section>
+</section>
+<section id="penalties-drawn" class="level2">
+<h2 class="anchored" data-anchor-id="penalties-drawn">Penalties Drawn</h2>
+<section id="the-best-defensive-player-should-also-make-people-the-most-made-and-there-get-the-most-penalties-commited-against-them." class="level3">
+<h3 class="anchored" data-anchor-id="the-best-defensive-player-should-also-make-people-the-most-made-and-there-get-the-most-penalties-commited-against-them.">The best defensive player should also make people the most made and there get the most penalties commited against them.</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="top-5-penalties-drawn" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-penalties-drawn">Top 5 Penalties Drawn</h3>
+<section id="brady-tkachuk-1" class="level4">
+<h4 class="anchored" data-anchor-id="brady-tkachuk-1">1. Brady Tkachuk</h4>
+</section>
+<section id="tom-wilson" class="level4">
+<h4 class="anchored" data-anchor-id="tom-wilson">2. Tom Wilson</h4>
+</section>
+<section id="garret-hathaway" class="level4">
+<h4 class="anchored" data-anchor-id="garret-hathaway">3. Garret Hathaway</h4>
+</section>
+<section id="nico-hischier" class="level4">
+<h4 class="anchored" data-anchor-id="nico-hischier">4. Nico Hischier</h4>
+</section>
+<section id="nazem-kadri" class="level4">
+<h4 class="anchored" data-anchor-id="nazem-kadri">5. Nazem Kadri</h4>
+<p>##Giveaway vs.&nbsp;Takeaway ### to short them I am going to use Takeaway stat</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         Player Takeaways
+1   Nazem Kadri        22
+2   Sam Bennett        22
+3 Nico Hischier        19
+4    Tom Wilson        16
+5 Brady Tkachuk        15</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="my-ballet-is__" class="level2">
+<h2 class="anchored" data-anchor-id="my-ballet-is__">My Ballet is__</h2>
+<section id="nazem-kadri-1" class="level3">
+<h3 class="anchored" data-anchor-id="nazem-kadri-1">1. Nazem Kadri</h3>
+</section>
+<section id="sam-bennett-1" class="level3">
+<h3 class="anchored" data-anchor-id="sam-bennett-1">2. Sam Bennett</h3>
+</section>
+<section id="nico-hischier-1" class="level3">
+<h3 class="anchored" data-anchor-id="nico-hischier-1">3. Nico Hischier</h3>
+</section>
+<section id="tom-wilson-1" class="level3">
+<h3 class="anchored" data-anchor-id="tom-wilson-1">4. Tom Wilson</h3>
+</section>
+<section id="brady-tkachuk-2" class="level3">
+<h3 class="anchored" data-anchor-id="brady-tkachuk-2">5. Brady Tkachuk</h3>
+</section>
+</section>
+</section>
+<section id="james-norris-memorial-trophy" class="level1">
+<h1>James Norris Memorial Trophy</h1>
+<section id="shots-blocked" class="level2">
+<h2 class="anchored" data-anchor-id="shots-blocked">Shots blocked</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="top-5-5" class="level3">
+<h3 class="anchored" data-anchor-id="top-5-5">Top 5</h3>
+</section>
+</section>
+<section id="total-penalties-1" class="level2">
+<h2 class="anchored" data-anchor-id="total-penalties-1">Total Penalties</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="top-5-from-above-ranked-on-cf" class="level2">
+<h2 class="anchored" data-anchor-id="top-5-from-above-ranked-on-cf">Top 5 from above ranked on CF%</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Actual-Hocky-Project_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="my-ballet-for-the-james-norris-memorial-is" class="level3">
+<h3 class="anchored" data-anchor-id="my-ballet-for-the-james-norris-memorial-is">My Ballet for the James Norris Memorial is…</h3>
+</section>
+<section id="brayden-pachal" class="level3">
+<h3 class="anchored" data-anchor-id="brayden-pachal">1. Brayden Pachal</h3>
+</section>
+<section id="rasmus-anderson" class="level3">
+<h3 class="anchored" data-anchor-id="rasmus-anderson">2. Rasmus Anderson</h3>
+</section>
+<section id="emil-lilleberg" class="level3">
+<h3 class="anchored" data-anchor-id="emil-lilleberg">3. Emil Lilleberg</h3>
+</section>
+<section id="ian-cole" class="level3">
+<h3 class="anchored" data-anchor-id="ian-cole">4. Ian Cole</h3>
+</section>
+<section id="arber-xhekaj" class="level3">
+<h3 class="anchored" data-anchor-id="arber-xhekaj">5. Arber Xhekaj</h3>
+</section>
+</section>
+</section>
+<section id="calder-memorial-rookie-of-the-year" class="level1">
+<h1>Calder Memorial (Rookie of the year!!)</h1>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

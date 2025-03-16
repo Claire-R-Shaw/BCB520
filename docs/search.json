@@ -39,13 +39,83 @@
     "href": "index.html",
     "title": "BCB520",
     "section": "",
-    "text": "Actual Hocky Project\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMar 12, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 4\n\n\nMarks and Channels\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\nNo matching items"
+    "text": "Hockey Project\n\n\n\n\n\n\n\n\n\n\n\nMar 16, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMar 12, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\n\n\n\n\n\n\nAssignment 4\n\n\nMarks and Channels\n\n\n\n\n\n\n\n\nFeb 15, 2025\n\n\nClaire Shaw\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html",
     "href": "posts/Hocky Project/Actual Hocky Project.html",
-    "title": "Actual Hocky Project",
+    "title": "Hockey Project",
     "section": "",
-    "text": "Indivdual.Skater &lt;- read.csv(\"SkaterIndividualstats.csv\")\nOnIce.Skater &lt;- read.csv(\"SkaterOnicestats.csv\")\nGoalies &lt;- read.csv(\"Goalies.csv\")\nIndividual.Skater.Rookie &lt;- read.csv(\"RookieSkaterindividual.csv\")\nOnIce.Skater.Rookie &lt;- read.csv(\"RookieSkaterOnIce.csv\")\nRookie.Goalie &lt;- read.csv(\"RookieGoalies.csv\")\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.4     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nLooking at SV%\n\nfiltered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(SV.)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = SV., y = reorder(Player, SV.), fill = \"red\")) +\n  geom_col() +\n  labs(\n    x = \"Save Percentage\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual Save Percentage\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\nTop 5: Hellebuyck Vasilevskiy Thompson Blackwood Gustavsson\nLooking at Goals saved Above Average\n\nfiltered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 30) %&gt;%\n  arrange(desc(GSAA)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = GSAA, y = reorder(Player, GSAA), fill = \"blue\")) +\n  geom_col() +\n  labs(\n    x = \"Goals Saved Above Average\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual Goals Saved Above Average\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\nTop 5: Hellebuyck Vasilevskiy Blackwood Thompson Gustavsson\nLooking at high danger goals saved above average\n\nfiltered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(HDGSAA)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = HDGSAA, y = reorder(Player, HDGSAA), fill = \"red\")) +\n  geom_col() +\n  labs(\n    x = \"HD Goals Saved Above Average\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual HD Goal Saved Above Average\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n)\n\n\n\n\n\n\n\n\nTop 5: Hellebuyck Vasilevskiy Kochetkov Wolf Blackwood\nNow the hard part. What stats matters the most?\n\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\n\nScale.Goalies &lt;- Goalies %&gt;%\n  filter(GP &gt; 25) %&gt;%\n  mutate(\n    scale.SV. = scale(SV.),\n    scale.GSAA = scale(GSAA),\n    scale.HDGSAA = scale(HDGSAA),\n   \n    composite.Score = scale.SV. + scale.GSAA + scale.HDGSAA\n  ) %&gt;%\n  arrange(desc(composite.Score)) %&gt;%\n  slice_head(n = 10)  \n\n\nScale.Goalies_long &lt;- Scale.Goalies %&gt;%\n  pivot_longer(\n    cols = c(scale.SV., scale.GSAA, scale.HDGSAA),\n    names_to = \"component\",\n    values_to = \"value\"\n  ) %&gt;%\n  mutate(component = factor(component, levels = c(\"scale.HDGSAA\", \"scale.GSAA\", \"scale.SV.\")))\n\n\nggplot(Scale.Goalies_long, aes(x = reorder(Player, composite.Score), y = value, fill = component)) +\n  geom_col(position = \"stack\") +\n  coord_flip() +\n  scale_fill_manual(values = c(\"scale.SV.\" = \"#FF7F0E\", \n                               \"scale.GSAA\" = \"#1F77B4\",\n                               \"scale.HDGSAA\" = \"#D62728\")) +\n  labs(\n    x = \"Player Name\",\n    y = \"Composite Score\",\n    fill = \"Component\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Top 10 Vezina Ranking\",\n    subtitle = \"2024-2025 season stats as of March 4\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\nMy Final Ballot for the Vezina Award is …\n\nConnor Hellebuyck\nAndrei Vasilevskiy\nMakenzie Blackwood\nLogan Thompson\nFilip Gustavsson\n\nI did choose Gustavsson over Wolf. Gustavsson beats wolf in SV and GSAA. While wold has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those."
+    "text": "I did choose Gustavsson over Wolf. Gustavsson beats wolf in SV% and GSAA. While Wolf has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those."
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#my-final-ballot-for-the-vezina-award-is",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#my-final-ballot-for-the-vezina-award-is",
+    "title": "Hockey Project",
+    "section": "",
+    "text": "I did choose Gustavsson over Wolf. Gustavsson beats wolf in SV% and GSAA. While Wolf has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those."
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#expected-goals-percentage",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#expected-goals-percentage",
+    "title": "Hockey Project",
+    "section": "Expected Goals Percentage",
+    "text": "Expected Goals Percentage\n\n\n\n\n\n\n\n\n\n\nTop 5:\n\n1. Jackson Blake\n\n\n2. Josh Doan\n\n\n3. Matthew Tkachuk\n\n\n4. Leon Draisaitl\n\n\n5. Victor Olofsson"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#percentage-of-total-corsi",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#percentage-of-total-corsi",
+    "title": "Hockey Project",
+    "section": "Percentage of total Corsi",
+    "text": "Percentage of total Corsi\n\n\n\n\n\n\n\n\n\n\nTop 5:\n\n1. Shayne Godtisbehertr\n\n\n2. Matthew Tkachuk\n\n\n3. Jackson Blake\n\n\n4. Jonathan Drouin\n\n\n5. Martin Necas"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#final-ballot-for-the-hart-memorial-is.",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#final-ballot-for-the-hart-memorial-is.",
+    "title": "Hockey Project",
+    "section": "Final Ballot for the Hart Memorial is….",
+    "text": "Final Ballot for the Hart Memorial is….\n\n1. Jackson Black\n\n\n2. Matthew Tkachuk\n\n\n3. Shayne Godtisbehertr\n\n\n4. Leon Draisaitl\n\n\n5. Josh Doan"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#total-penalties",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#total-penalties",
+    "title": "Hockey Project",
+    "section": "Total Penalties",
+    "text": "Total Penalties\n\nIn my mind the bewst defensive player should be the most agresive and therefore have the most penalties\n\n\n\n\n\n\n\n\n\n\n\nTop 5: for penalties\n\n1. Brady Tkachuk\n\n\n2. Mathiew Oliver\n\n\n3. A.J. Green\n\n\n4. Brad Machand\n\n\n5. Sam Bennett"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#penalties-drawn",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#penalties-drawn",
+    "title": "Hockey Project",
+    "section": "Penalties Drawn",
+    "text": "Penalties Drawn\n\nThe best defensive player should also make people the most made and there get the most penalties commited against them.\n\n\n\n\n\n\n\n\n\n\n\nTop 5 Penalties Drawn\n\n1. Brady Tkachuk\n\n\n2. Tom Wilson\n\n\n3. Garret Hathaway\n\n\n4. Nico Hischier\n\n\n5. Nazem Kadri\n##Giveaway vs. Takeaway ### to short them I am going to use Takeaway stat\n\n\n         Player Takeaways\n1   Nazem Kadri        22\n2   Sam Bennett        22\n3 Nico Hischier        19\n4    Tom Wilson        16\n5 Brady Tkachuk        15"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#my-ballet-is__",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#my-ballet-is__",
+    "title": "Hockey Project",
+    "section": "My Ballet is__",
+    "text": "My Ballet is__\n\n1. Nazem Kadri\n\n\n2. Sam Bennett\n\n\n3. Nico Hischier\n\n\n4. Tom Wilson\n\n\n5. Brady Tkachuk"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#shots-blocked",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#shots-blocked",
+    "title": "Hockey Project",
+    "section": "Shots blocked",
+    "text": "Shots blocked\n\n\n\n\n\n\n\n\n\n\nTop 5"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#total-penalties-1",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#total-penalties-1",
+    "title": "Hockey Project",
+    "section": "Total Penalties",
+    "text": "Total Penalties"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#top-5-from-above-ranked-on-cf",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#top-5-from-above-ranked-on-cf",
+    "title": "Hockey Project",
+    "section": "Top 5 from above ranked on CF%",
+    "text": "Top 5 from above ranked on CF%\n\n\n\n\n\n\n\n\n\n\nMy Ballet for the James Norris Memorial is…\n\n\n1. Brayden Pachal\n\n\n2. Rasmus Anderson\n\n\n3. Emil Lilleberg\n\n\n4. Ian Cole\n\n\n5. Arber Xhekaj"
   }
 ]
