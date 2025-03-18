@@ -46,7 +46,7 @@
     "href": "posts/Hocky Project/Actual Hocky Project.html",
     "title": "Hockey Project",
     "section": "",
-    "text": "I did choose Gustavsson over Wolf. Gustavsson beats wolf in SV% and GSAA. While Wolf has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those."
+    "text": "library(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.0.4     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nIndivdual.Skater &lt;- read.csv(\"SkaterIndividualstats.csv\")\nOnIce.Skater &lt;- read.csv(\"SkaterOnicestats.csv\")\nGoalies &lt;- read.csv(\"Goalies.csv\")\nIndividual.Skater.Rookie &lt;- read.csv(\"RookieSkaterindividual.csv\")\nOnIce.Skater.Rookie &lt;- read.csv(\"RookieSkaterOnIce.csv\")\nRookie.Goalie &lt;- read.csv(\"RookieGoalies.csv\")\n\n\n\n\nfiltered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(SV.)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = SV., y = reorder(Player, SV.))) +\n  geom_col(fill = \"#FF7F0E\", show.legend = FALSE) +\n  labs(\n    x = \"Save Percentage\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual Save Percentage\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfiltered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(GSAA)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = GSAA, y = reorder(Player, GSAA))) +\n  geom_col(fill = \"#1F77B4\", show.legend = FALSE) +\n  labs(\n    x = \"Goals Saved Above Average\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual Goals Saved Above Average\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfiltered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(HDGSAA)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = HDGSAA, y = reorder(Player, HDGSAA))) +\n  geom_col(fill = \"red\", show.legend = FALSE) +\n  labs(\n    x = \"HD Goals Saved Above Average\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual HD Goal Saved Above Average\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\n\nScale.Goalies &lt;- Goalies %&gt;%\n  filter(GP &gt; 25) %&gt;%\n  mutate(\n    scale.SV. = scale(SV.),\n    scale.GSAA = scale(GSAA),\n    scale.HDGSAA = scale(HDGSAA),\n   \n    composite.Score = scale.SV. + scale.GSAA + scale.HDGSAA\n  ) %&gt;%\n  arrange(desc(composite.Score)) %&gt;%\n  slice_head(n = 10)  \n\n\nScale.Goalies_long &lt;- Scale.Goalies %&gt;%\n  pivot_longer(\n    cols = c(scale.SV., scale.GSAA, scale.HDGSAA),\n    names_to = \"component\",\n    values_to = \"value\"\n  ) %&gt;%\n  mutate(component = factor(component, levels = c(\"scale.HDGSAA\", \"scale.GSAA\", \"scale.SV.\")))\n\n\nggplot(Scale.Goalies_long, aes(x = reorder(Player, composite.Score), y = value, fill = component)) +\n  geom_col(position = \"stack\") +\n  coord_flip() +\n  scale_fill_manual(values = c(\"scale.SV.\" = \"#FF7F0E\", \n                               \"scale.GSAA\" = \"#1F77B4\",\n                               \"scale.HDGSAA\" = \"#D62728\")) +\n  labs(\n    x = \"Player Name\",\n    y = \"Composite Score\",\n    fill = \"Component\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Top 10 Vezina Ranking\",\n    subtitle = \"2024-2025 season stats as of March 4\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#my-final-ballot-for-the-vezina-award-is",
@@ -60,14 +60,14 @@
     "href": "posts/Hocky Project/Actual Hocky Project.html#expected-goals-percentage",
     "title": "Hockey Project",
     "section": "Expected Goals Percentage",
-    "text": "Expected Goals Percentage\n\n\n\n\n\n\n\n\n\n\nTop 5:\n\n1. Jackson Blake\n\n\n2. Josh Doan\n\n\n3. Matthew Tkachuk\n\n\n4. Leon Draisaitl\n\n\n5. Victor Olofsson"
+    "text": "Expected Goals Percentage\n\nfiltered_OnIce.Skater &lt;- OnIce.Skater %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(xGF.)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_OnIce.Skater, aes(x = xGF., y = reorder(Player, xGF.))) +\n  geom_col(fill = \"purple\", show.legend = FALSE) +\n  labs(\n    x = \"Expected Goals Percentage\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"On Ice Expected Goals Percentage\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\nTop 5:\n\n1. Jackson Blake\n\n\n2. Josh Doan\n\n\n3. Matthew Tkachuk\n\n\n4. Leon Draisaitl\n\n\n5. Victor Olofsson"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#percentage-of-total-corsi",
     "href": "posts/Hocky Project/Actual Hocky Project.html#percentage-of-total-corsi",
     "title": "Hockey Project",
     "section": "Percentage of total Corsi",
-    "text": "Percentage of total Corsi\n\n\n\n\n\n\n\n\n\n\nTop 5:\n\n1. Shayne Godtisbehertr\n\n\n2. Matthew Tkachuk\n\n\n3. Jackson Blake\n\n\n4. Jonathan Drouin\n\n\n5. Martin Necas"
+    "text": "Percentage of total Corsi\n\nfiltered_OnIce.Skater &lt;- OnIce.Skater %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(CF.)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_OnIce.Skater, aes(x = CF., y = reorder(Player, CF.))) +\n  geom_col(fill = \"darkgreen\", show.legend = FALSE) +\n  labs(\n    x = \"Total Percentage of Corsi\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"On Ice Corsi Percentage\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\nTop 5:\n\n1. Shayne Godtisbehertr\n\n\n2. Matthew Tkachuk\n\n\n3. Jackson Blake\n\n\n4. Jonathan Drouin\n\n\n5. Martin Necas"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#final-ballot-for-the-hart-memorial-is.",
@@ -81,14 +81,14 @@
     "href": "posts/Hocky Project/Actual Hocky Project.html#total-penalties",
     "title": "Hockey Project",
     "section": "Total Penalties",
-    "text": "Total Penalties\n\nIn my mind the best defensive player should be the most agresive and therefore have the most penalties\n\n\n\n\n\n\n\n\n\n\n\nTop 5: for penalties\n\n1. Brady Tkachuk\n\n\n2. Mathiew Oliver\n\n\n3. A.J. Green\n\n\n4. Brad Machand\n\n\n5. Sam Bennett"
+    "text": "Total Penalties\n\nIn my mind the best defensive player should be the most agresive and therefore have the most penalties\n\nfiltered_Indivdual.Skater &lt;- Indivdual.Skater %&gt;%\n  filter(GP &gt;= 25, grepl(\"L|R|C\", Position)) %&gt;%  # Filter for positions containing L, R, or C\n  arrange(desc(Total.Penalties)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_Indivdual.Skater, aes(x = Total.Penalties, y = reorder(Player, Total.Penalties))) +\n  geom_col(fill = \"pink\", show.legend = FALSE) +\n  labs(\n    x = \"Total Penalties\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Total Penalties\",\n    subtitle = \"2024-2025 season stats as of March 4\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\n\nTop 5: for penalties\n\n1. Brady Tkachuk\n\n\n2. Mathiew Oliver\n\n\n3. A.J. Green\n\n\n4. Brad Machand\n\n\n5. Sam Bennett"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#penalties-drawn",
     "href": "posts/Hocky Project/Actual Hocky Project.html#penalties-drawn",
     "title": "Hockey Project",
     "section": "Penalties Drawn",
-    "text": "Penalties Drawn\n\nThe best defensive player should also make people the most mad and there get the most penalties commited against them.\n\n\n\n\n\n\n\n\n\n\n\nTop 5 Penalties Drawn\n\n1. Brady Tkachuk\n\n\n2. Tom Wilson\n\n\n3. Garret Hathaway\n\n\n4. Nico Hischier\n\n\n5. Nazem Kadri"
+    "text": "Penalties Drawn\n\nThe best defensive player should also make people the most mad and there get the most penalties commited against them.\n\nfiltered_Indivdual.Skater &lt;- Indivdual.Skater %&gt;%\n  filter(GP &gt;= 25, grepl(\"L|R|C\", Position)) %&gt;%  # Filter for positions containing L, R, or C\n  arrange(desc(Penalties.Drawn)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_Indivdual.Skater, aes(x = Penalties.Drawn, y = reorder(Player, Penalties.Drawn))) +\n  geom_col(fill = \"pink\", show.legend = FALSE) +\n  labs(\n    x = \"Penalties Drawn\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Total Penalties Drawn\",\n    subtitle = \"2024-2025 season stats as of March 4\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\n\nTop 5 Penalties Drawn\n\n1. Brady Tkachuk\n\n\n2. Tom Wilson\n\n\n3. Garret Hathaway\n\n\n4. Nico Hischier\n\n\n5. Nazem Kadri"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#my-ballet-is__",
@@ -109,7 +109,7 @@
     "href": "posts/Hocky Project/Actual Hocky Project.html#total-penalties-1",
     "title": "Hockey Project",
     "section": "Total Penalties",
-    "text": "Total Penalties"
+    "text": "Total Penalties\n\nlibrary(dplyr)\nlibrary(ggplot2)\n\nfiltered_Indivdual.Skater &lt;- Indivdual.Skater %&gt;%\n  filter(GP &gt;= 25, Position == \"D\") %&gt;%  # Filter for position \"D\"\n  arrange(desc(Total.Penalties)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_Indivdual.Skater, aes(x = Total.Penalties, y = reorder(Player, Total.Penalties))) +\n  geom_col(fill = \"blue\", show.legend = FALSE) +\n  labs(\n    x = \"Total Penalties\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Total Penalties\",\n    subtitle = \"2024-2025 season stats as of March 4\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#top-5-from-above-ranked-on-cf",
@@ -123,7 +123,7 @@
     "href": "posts/Hocky Project/Actual Hocky Project.html#takeaways",
     "title": "Hockey Project",
     "section": "Takeaways",
-    "text": "Takeaways\n\nTo sort the top 5 for total penalties adn top 5 for penalties drawn I used Takeaway stat\n\n\n         Player Takeaways\n1   Nazem Kadri        22\n2   Sam Bennett        22\n3 Nico Hischier        19\n4    Tom Wilson        16\n5 Brady Tkachuk        15\n\n\n\n\nMy Ballet is\n\n1. Nazem Kadri\n\n\n2. Sam Bennett\n\n\n3. Nico Hischier\n\n\n4. Tom Wilson\n\n\n5. Brady Tkachuk"
+    "text": "Takeaways\n\nTo sort the top 5 for total penalties adn top 5 for penalties drawn I used Takeaway stat\n\nlibrary(dplyr)\n\n\nall_top_players &lt;- unique(c(\n  \"Brady Tkachuk\", \"Tom Wilson\", \"Garret Hathaway\", \"Nico Hischier\", \"Nazem Kadri\",\n  \"Mathiew Oliver\", \"A.J. Green\", \"Brad Machand\", \"Sam Bennett\"\n))\n\n\nranked_players &lt;- Indivdual.Skater %&gt;%\n  filter(Player %in% all_top_players) %&gt;%\n  select(Player, Takeaways) %&gt;%\n  arrange(desc(Takeaways))\n\n\nprint(ranked_players)\n\n         Player Takeaways\n1   Nazem Kadri        22\n2   Sam Bennett        22\n3 Nico Hischier        19\n4    Tom Wilson        16\n5 Brady Tkachuk        15\n\n\n\n\nMy Ballet is\n\n1. Nazem Kadri\n\n\n2. Sam Bennett\n\n\n3. Nico Hischier\n\n\n4. Tom Wilson\n\n\n5. Brady Tkachuk"
   },
   {
     "objectID": "posts/Hocky Project/Actual Hocky Project.html#looks-like-the-top-10-have-played-more-the-1100",
@@ -158,6 +158,34 @@
     "href": "posts/Hocky Project/Actual Hocky Project.html#top-10-from-above-ranked-on-cf",
     "title": "Hockey Project",
     "section": "Top 10 from above ranked on CF%",
-    "text": "Top 10 from above ranked on CF%\n\nWant the players to be agressive but also help out the team\n\n\n\n\n\n\n\n\n\n\n\nMy Ballet for the James Norris Memorial is…\n\n\n1. Aaron Ekblad\n\n\n2. Niko Mikkola\n\n\n3. Brayden Pachal\n\n\n4. Emil Lilleberg\n\n\n5. Ian Cole"
+    "text": "Top 10 from above ranked on CF%\n\nWant the players to be agressive but also help out the team\n\nlibrary(dplyr)\nlibrary(ggplot2)\n\n\nspecific_players &lt;- c(\n  \"Nikita Zadorov\", \"Brayden Pachal\", \"Arber Xhekaj\", \"Radko Gudas\",\n  \"Emil Lilleberg\", \"Tyler Myers\", \"Brenden Dillion\", \"Aaron Ekblad\",\n  \"Ian Cole\", \"Niko Mikkola\"\n)\n\n\nfiltered_OnIce.Skater &lt;- OnIce.Skater %&gt;%\n  filter(Player %in% specific_players) %&gt;%\n  arrange(desc(CF.))\n\n\nggplot(filtered_OnIce.Skater, aes(x = CF., y = reorder(Player, CF.))) +\n  geom_col(fill = \"blue\", show.legend = FALSE) +\n  labs(\n    x = \"Corsi For (CF.)\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Corsi (CF%) Ranking\",\n    subtitle = \"Specific Players\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\n\n\n\nMy Ballet for the James Norris Memorial is…\n\n\n1. Aaron Ekblad\n\n\n2. Niko Mikkola\n\n\n3. Brayden Pachal\n\n\n4. Emil Lilleberg\n\n\n5. Ian Cole"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#percentage-of-shots-against-that-were-saves-sv",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#percentage-of-shots-against-that-were-saves-sv",
+    "title": "Hockey Project",
+    "section": "",
+    "text": "filtered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(SV.)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = SV., y = reorder(Player, SV.))) +\n  geom_col(fill = \"#FF7F0E\", show.legend = FALSE) +\n  labs(\n    x = \"Save Percentage\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual Save Percentage\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#goals-saved-above-average-gsaa",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#goals-saved-above-average-gsaa",
+    "title": "Hockey Project",
+    "section": "",
+    "text": "filtered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(GSAA)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = GSAA, y = reorder(Player, GSAA))) +\n  geom_col(fill = \"#1F77B4\", show.legend = FALSE) +\n  labs(\n    x = \"Goals Saved Above Average\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual Goals Saved Above Average\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n  )"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#high-danger-goals-saves-above-average",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#high-danger-goals-saves-above-average",
+    "title": "Hockey Project",
+    "section": "",
+    "text": "filtered_goalies &lt;- Goalies %&gt;%\n  filter(GP &gt;= 25) %&gt;%\n  arrange(desc(HDGSAA)) %&gt;%\n  slice_head(n = 20)\n\nggplot(filtered_goalies, aes(x = HDGSAA, y = reorder(Player, HDGSAA))) +\n  geom_col(fill = \"red\", show.legend = FALSE) +\n  labs(\n    x = \"HD Goals Saved Above Average\",\n    y = \"Player Name\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Individual HD Goal Saved Above Average\",\n    subtitle = \"2024-2025 season stats as of March 4\") +\n  theme_minimal() +\n  theme(panel.grid.major.y = element_blank(),\n        panel.grid.minor = element_blank()\n)"
+  },
+  {
+    "objectID": "posts/Hocky Project/Actual Hocky Project.html#lastly-to-look-at-them-all-together-and-compair",
+    "href": "posts/Hocky Project/Actual Hocky Project.html#lastly-to-look-at-them-all-together-and-compair",
+    "title": "Hockey Project",
+    "section": "",
+    "text": "library(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\n\nScale.Goalies &lt;- Goalies %&gt;%\n  filter(GP &gt; 25) %&gt;%\n  mutate(\n    scale.SV. = scale(SV.),\n    scale.GSAA = scale(GSAA),\n    scale.HDGSAA = scale(HDGSAA),\n   \n    composite.Score = scale.SV. + scale.GSAA + scale.HDGSAA\n  ) %&gt;%\n  arrange(desc(composite.Score)) %&gt;%\n  slice_head(n = 10)  \n\n\nScale.Goalies_long &lt;- Scale.Goalies %&gt;%\n  pivot_longer(\n    cols = c(scale.SV., scale.GSAA, scale.HDGSAA),\n    names_to = \"component\",\n    values_to = \"value\"\n  ) %&gt;%\n  mutate(component = factor(component, levels = c(\"scale.HDGSAA\", \"scale.GSAA\", \"scale.SV.\")))\n\n\nggplot(Scale.Goalies_long, aes(x = reorder(Player, composite.Score), y = value, fill = component)) +\n  geom_col(position = \"stack\") +\n  coord_flip() +\n  scale_fill_manual(values = c(\"scale.SV.\" = \"#FF7F0E\", \n                               \"scale.GSAA\" = \"#1F77B4\",\n                               \"scale.HDGSAA\" = \"#D62728\")) +\n  labs(\n    x = \"Player Name\",\n    y = \"Composite Score\",\n    fill = \"Component\",\n    caption = \"Source: https://www.naturalstattrick.com/\",\n    title = \"Top 10 Vezina Ranking\",\n    subtitle = \"2024-2025 season stats as of March 4\"\n  ) +\n  theme_minimal() +\n  theme(\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank()\n  )"
   }
 ]
