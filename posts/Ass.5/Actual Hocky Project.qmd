@@ -1,0 +1,572 @@
+---
+title: "Hockey Project"
+author: "Claire Shaw"
+date: "3.16.25"
+code-fold: true
+---
+# Vezina Trophy
+```{r}
+library(tidyverse)
+
+Indivdual.Skater <- read.csv("SkaterIndividualstats.csv")
+OnIce.Skater <- read.csv("SkaterOnicestats.csv")
+Goalies <- read.csv("Goalies.csv")
+Individual.Skater.Rookie <- read.csv("RookieSkaterindividual.csv")
+OnIce.Skater.Rookie <- read.csv("RookieSkaterOnIce.csv")
+Rookie.Goalie <- read.csv("RookieGoalies.csv")
+```
+## Percentage of shots against that were saves (SV%)
+
+```{r}
+filtered_goalies <- Goalies %>%
+  filter(GP >= 25) %>%
+  arrange(desc(SV.)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_goalies, aes(x = SV., y = reorder(Player, SV.))) +
+  geom_col(fill = "#FF7F0E", show.legend = FALSE) +
+  labs(
+    x = "Save Percentage",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Individual Save Percentage",
+    subtitle = "2024-2025 season stats as of March 4") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+
+
+```
+
+### Top 5: 
+#### 1. Hellebuyck
+#### 2. Vasilevskiy
+#### 3. Thompson
+#### 4. Blackwood
+#### 5. Gustavsson
+
+
+## Goals Saved Above Average (GSAA)
+
+
+```{r}
+filtered_goalies <- Goalies %>%
+  filter(GP >= 25) %>%
+  arrange(desc(GSAA)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_goalies, aes(x = GSAA, y = reorder(Player, GSAA))) +
+  geom_col(fill = "#1F77B4", show.legend = FALSE) +
+  labs(
+    x = "Goals Saved Above Average",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Individual Goals Saved Above Average",
+    subtitle = "2024-2025 season stats as of March 4") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+
+```
+
+### Top 5: 
+#### 1. Hellebuyck
+#### 2. Vasilevskiy
+#### 3. Blackwood
+#### 4. Thompson
+#### 5. Gustavsson
+
+
+## High Danger Goals Saves Above Average
+
+```{r}
+filtered_goalies <- Goalies %>%
+  filter(GP >= 25) %>%
+  arrange(desc(HDGSAA)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_goalies, aes(x = HDGSAA, y = reorder(Player, HDGSAA))) +
+  geom_col(fill = "red", show.legend = FALSE) +
+  labs(
+    x = "HD Goals Saved Above Average",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Individual HD Goal Saved Above Average",
+    subtitle = "2024-2025 season stats as of March 4") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+)
+```
+
+### Top 5:
+#### 1. Hellebuyck
+#### 2. Vasilevskiy
+#### 3. Kochetkov
+#### 4. Wolf
+#### 5. Blackwood
+
+## Lastly to look at them all together and compair
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+Scale.Goalies <- Goalies %>%
+  filter(GP > 25) %>%
+  mutate(
+    scale.SV. = scale(SV.),
+    scale.GSAA = scale(GSAA),
+    scale.HDGSAA = scale(HDGSAA),
+   
+    composite.Score = scale.SV. + scale.GSAA + scale.HDGSAA
+  ) %>%
+  arrange(desc(composite.Score)) %>%
+  slice_head(n = 10)  
+
+
+Scale.Goalies_long <- Scale.Goalies %>%
+  pivot_longer(
+    cols = c(scale.SV., scale.GSAA, scale.HDGSAA),
+    names_to = "component",
+    values_to = "value"
+  ) %>%
+  mutate(component = factor(component, levels = c("scale.HDGSAA", "scale.GSAA", "scale.SV.")))
+
+
+ggplot(Scale.Goalies_long, aes(x = reorder(Player, composite.Score), y = value, fill = component)) +
+  geom_col(position = "stack") +
+  coord_flip() +
+  scale_fill_manual(values = c("scale.SV." = "#FF7F0E", 
+                               "scale.GSAA" = "#1F77B4",
+                               "scale.HDGSAA" = "#D62728")) +
+  labs(
+    x = "Player Name",
+    y = "Composite Score",
+    fill = "Component",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Top 10 Vezina Ranking",
+    subtitle = "2024-2025 season stats as of March 4"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+
+
+```
+## My Final Ballot for the Vezina Award is ...
+
+### 1.Connor Hellebuyck 
+### 2. Andrei Vasilevskiy
+### 3. Makenzie Blackwood 
+### 4. Logan Thompson
+### 5. Filip Gustavsson
+
+###### I did choose Gustavsson over Wolf. Gustavsson beats wolf in SV% and GSAA. While Wolf has higher HDGSAA, I think SV and GSAA are more important and Wolf was ranked 7th in both of those. 
+
+
+# Hart Memorial Trophy
+
+## Expected Goals Percentage 
+
+```{r}
+filtered_OnIce.Skater <- OnIce.Skater %>%
+  filter(GP >= 25) %>%
+  arrange(desc(xGF.)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_OnIce.Skater, aes(x = xGF., y = reorder(Player, xGF.))) +
+  geom_col(fill = "purple", show.legend = FALSE) +
+  labs(
+    x = "Expected Goals Percentage",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "On Ice Expected Goals Percentage",
+    subtitle = "2024-2025 season stats as of March 4") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+```
+### Top 5: 
+
+#### 1. Jackson Blake
+#### 2. Josh Doan 
+#### 3. Matthew Tkachuk 
+#### 4. Leon Draisaitl
+#### 5. Victor Olofsson
+
+
+
+
+## Percentage of total Corsi
+
+```{r}
+filtered_OnIce.Skater <- OnIce.Skater %>%
+  filter(GP >= 25) %>%
+  arrange(desc(CF.)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_OnIce.Skater, aes(x = CF., y = reorder(Player, CF.))) +
+  geom_col(fill = "darkgreen", show.legend = FALSE) +
+  labs(
+    x = "Total Percentage of Corsi",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "On Ice Corsi Percentage",
+    subtitle = "2024-2025 season stats as of March 4") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank()
+  )
+
+```
+
+
+### Top 5:
+#### 1. Shayne Godtisbehertr
+#### 2. Matthew Tkachuk 
+#### 3. Jackson Blake
+#### 4. Jonathan Drouin
+#### 5. Martin Necas
+
+
+## Final Ballot for the Hart Memorial is....
+
+### 1. Jackson Black
+### 2. Matthew Tkachuk
+### 3. Shayne Godtisbehertr
+### 4. Leon Draisaitl
+### 5. Josh Doan 
+
+
+
+
+
+# Frank J. Selke Trophy 
+
+
+
+## Total Penalties 
+#### In my mind the best defensive player should be the most agresive and therefore have the most penalties
+
+
+```{r}
+filtered_Indivdual.Skater <- Indivdual.Skater %>%
+  filter(GP >= 25, grepl("L|R|C", Position)) %>%  # Filter for positions containing L, R, or C
+  arrange(desc(Total.Penalties)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_Indivdual.Skater, aes(x = Total.Penalties, y = reorder(Player, Total.Penalties))) +
+  geom_col(fill = "pink", show.legend = FALSE) +
+  labs(
+    x = "Total Penalties",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Total Penalties",
+    subtitle = "2024-2025 season stats as of March 4"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+### Top 5: for penalties 
+#### 1. Brady Tkachuk 
+#### 2. Mathiew Oliver
+#### 3. A.J. Green
+#### 4. Brad Machand
+#### 5. Sam Bennett
+
+
+## Penalties Drawn
+#### The best defensive player should also make people the most mad and there get the most penalties commited against them.
+
+```{r}
+filtered_Indivdual.Skater <- Indivdual.Skater %>%
+  filter(GP >= 25, grepl("L|R|C", Position)) %>%  # Filter for positions containing L, R, or C
+  arrange(desc(Penalties.Drawn)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_Indivdual.Skater, aes(x = Penalties.Drawn, y = reorder(Player, Penalties.Drawn))) +
+  geom_col(fill = "pink", show.legend = FALSE) +
+  labs(
+    x = "Penalties Drawn",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Total Penalties Drawn",
+    subtitle = "2024-2025 season stats as of March 4"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+
+### Top 5 Penalties Drawn 
+#### 1. Brady Tkachuk
+#### 2. Tom Wilson
+#### 3. Garret Hathaway
+#### 4. Nico Hischier
+#### 5. Nazem Kadri
+
+
+
+## Takeaways
+#### To sort the top 5 for total penalties adn top 5 for penalties drawn I used Takeaway stat
+
+```{r}
+library(dplyr)
+
+
+all_top_players <- unique(c(
+  "Brady Tkachuk", "Tom Wilson", "Garret Hathaway", "Nico Hischier", "Nazem Kadri",
+  "Mathiew Oliver", "A.J. Green", "Brad Machand", "Sam Bennett"
+))
+
+
+ranked_players <- Indivdual.Skater %>%
+  filter(Player %in% all_top_players) %>%
+  select(Player, Takeaways) %>%
+  arrange(desc(Takeaways))
+
+
+print(ranked_players)
+```
+### My Ballet is
+#### 1. Nazem Kadri 
+#### 2. Sam Bennett
+#### 3. Nico Hischier
+#### 4. Tom Wilson 
+#### 5. Brady Tkachuk
+
+
+# James Norris Memorial Trophy 
+
+
+## Total Penalties 
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+filtered_Indivdual.Skater <- Indivdual.Skater %>%
+  filter(GP >= 25, Position == "D") %>%  # Filter for position "D"
+  arrange(desc(Total.Penalties)) %>%
+  slice_head(n = 20)
+
+ggplot(filtered_Indivdual.Skater, aes(x = Total.Penalties, y = reorder(Player, Total.Penalties))) +
+  geom_col(fill = "blue", show.legend = FALSE) +
+  labs(
+    x = "Total Penalties",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Total Penalties",
+    subtitle = "2024-2025 season stats as of March 4"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+## Top 10 from above ranked on CF%
+
+### Want the players to be agressive but also help out the team
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+
+specific_players <- c(
+  "Nikita Zadorov", "Brayden Pachal", "Arber Xhekaj", "Radko Gudas",
+  "Emil Lilleberg", "Tyler Myers", "Brenden Dillion", "Aaron Ekblad",
+  "Ian Cole", "Niko Mikkola"
+)
+
+
+filtered_OnIce.Skater <- OnIce.Skater %>%
+  filter(Player %in% specific_players) %>%
+  arrange(desc(CF.))
+
+
+ggplot(filtered_OnIce.Skater, aes(x = CF., y = reorder(Player, CF.))) +
+  geom_col(fill = "blue", show.legend = FALSE) +
+  labs(
+    x = "Corsi For (CF.)",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Corsi (CF%) Ranking",
+    subtitle = "Specific Players"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+### My Ballet for the James Norris Memorial is... 
+
+### 1. Aaron Ekblad
+### 2. Niko Mikkola
+### 3. Brayden Pachal
+### 4. Emil Lilleberg
+### 5. Ian Cole
+
+
+# Calder Memorial (Rookie of the year!!)
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+
+top_rookies_by_TOI <- OnIce.Skater.Rookie %>%
+  arrange(desc(TOI)) %>%
+  slice_head(n = 10)
+
+
+ggplot(top_rookies_by_TOI, aes(x = TOI, y = reorder(Player, TOI))) +
+  geom_col(fill = "#FF7F0E", show.legend = FALSE) +
+  labs(
+    x = "Time on Ice (TOI)",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Top 10 Rookies by Time on Ice (TOI)",
+    subtitle = "2024-2025 season stats as of March 4"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+
+### Looks like the top 10 have played more the 1100 TOI
+
+#### Players ranked based on Corsi For, only looking at players with more then 1100 TOI
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Filter and arrange the OnIce.Skater.Rookie dataset by CF
+top_rookies_by_CF <- OnIce.Skater.Rookie %>%
+  filter(TOI >= 1100) %>%
+  arrange(desc(CF)) %>%
+  slice_head(n = 10)
+
+# Plot the CF
+ggplot(top_rookies_by_CF, aes(x = CF, y = reorder(Player, CF))) +
+  geom_col(fill = "#FF7F0E", show.legend = FALSE) +
+  labs(
+    x = "Corsi For (CF)",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Top 10 Rookies by Corsi For (CF)",
+    subtitle = "2024-2025 season stats as of March 4"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+
+
+#### Using the players above, sorting them on xGF (Expected Goals For)
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Filter for players with 25 or more games and arrange by CF
+top_rookies_by_CF <- OnIce.Skater.Rookie %>%
+  filter(GP >= 25) %>%
+  arrange(desc(CF)) %>%
+  slice_head(n = 10)
+
+# Arrange the top 10 by xGF
+top_rookies_by_xGF <- top_rookies_by_CF %>%
+  arrange(desc(xGF))
+
+# Plot the xGF
+ggplot(top_rookies_by_xGF, aes(x = xGF, y = reorder(Player, xGF))) +
+  geom_col(fill = "#FF7F0E", show.legend = FALSE) +
+  labs(
+    x = "Expected Goals For (xGF)",
+    y = "Player Name",
+    caption = "Source: https://www.naturalstattrick.com/",
+    title = "Top 10 Rookies by Expected Goals For (xGF)",
+    subtitle = "Filtered from Top CF Players"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+
+### My Ballot for the Calder Memorial is ... 
+
+#### 1. Jake Sanderson 
+#### 2. Wyatt Johnston 
+#### 3. Kirill Marchenko
+#### 4. Brock Faber
+#### 5. Owen Power
+
+
+# Lady Byng Memorial 
+
+#### Since the player should be good we will take the top 15 in TOI (best players should be playing more) and look at how many Penalty minutes they have
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Ensure dataset has necessary columns for demonstration
+# Indivdual.Skater must have columns: GP, PIM, TOI
+
+# Filter and rank players
+ranked_players <- Indivdual.Skater %>%
+  filter(GP >= 30) %>%
+  arrange(desc(TOI)) %>%
+  slice_head(n = 15)
+
+# Plot TOI with PIM as labels
+ggplot(ranked_players, aes(x = reorder(Player, TOI), y = TOI, fill = PIM)) +
+  geom_col(show.legend = TRUE) +
+  geom_text(aes(label = PIM), vjust = -0.5, color = "black") +
+  coord_flip() +
+  labs(
+    x = "Player Name",
+    y = "Time on Ice (TOI)",
+    fill = "Penalty Minutes (PIM)",
+    title = "Top 15 Players by TOI",
+    subtitle = "Including Penalty Minutes"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
+
+###  My Ballot for Lady Byng Memorial is... 
+
+#### 1. Colton Parayko
+#### 2. Jake Sanderson
+#### 3. Alex Vlasic
+#### 4. Cale Maker
+#### 5. Erik Karlsson
