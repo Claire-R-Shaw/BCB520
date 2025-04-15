@@ -1,0 +1,75 @@
+---
+title: "All_Hockey_Ranks"
+---
+
+```{r}
+suppressMessages({
+  library(here)
+  library(dplyr)
+  library(tidyr)
+  library(readxl)
+  library(stringr)
+  library(ggplot2)})
+
+library(readr)
+All_Rank <- read_csv("posts/Ass.5/results/All_Rank.csv")
+View(All_Rank)
+
+
+```
+
+```{r}
+
+# Sample structure of All_Hockey_Ranks
+ All_Rank <- read_csv("posts/Ass.5/results/All_Rank.csv")
+   
+
+
+# Define the points for each rank
+rank_points <- c(10, 7, 5, 3, 1)
+
+# Calculate points for each player in each award
+Rank <- Rank %>%
+  filter(Rank <= 5) %>%
+  mutate(Points = rank_points[Rank])
+
+# Group by award and sum points, then get top 5 players for each award
+top_players_by_award <- player_points %>%
+  group_by(Award, Player) %>%
+  summarise(TotalPoints = sum(Points), .groups = 'drop') %>%
+  arrange(Award, desc(TotalPoints)) %>%
+  group_by(Award) %>%
+  slice_head(n = 5)
+
+# Display the top players
+print(top_players_by_award)
+
+```
+
+```{r}
+c <- bind_rows(award, barrie, betsy, ian, john, marwa, nhl, ranking, sharon, nhlballet) |>
+  mutate(points = case_when(
+    rank == 1 ~ 10,
+    rank == 2 ~ 7,
+    rank == 3 ~ 5,
+    rank == 4 ~ 3,
+    rank == 5 ~ 1,
+  )) |>
+  mutate(award = str_to_lower(award)) |>  # Convert to lowercase for easier matching
+  mutate(award = case_when(
+    str_detect(award, "calder") ~ "Calder Memorial",
+    str_detect(award, "hart|heart") ~ "Hart Memorial",
+    str_detect(award, "norris") ~ "James Norris Memorial",
+    str_detect(award, "selke|frank") ~ "Frank Selke Memorial",
+    str_detect(award, "byng|btng|lady") ~ "Lady Byng Memorial",
+    str_detect(award, "vezina") ~ "Vezina",
+    TRUE ~ award)) # Keep original if no match
+
+overall_player_ranking <- c |>
+  group_by(player) |>
+  summarise(total_points = sum(points, na.rm = TRUE)) |>
+  arrange(desc(total_points))
+
+```
+
+```

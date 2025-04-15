@@ -1,0 +1,265 @@
+---
+title: "Network_practice"
+---
+
+```{r}
+# install.packages("igraph")
+
+install.packages("igraph")
+
+library(igraph)
+```
+
+
+
+```{r}
+library(readr)
+Network_people <- read_csv("Desktop/BCB520/posts/Network_Data/Network_people.csv")
+View(Network_people)
+
+library(readr)
+Networks_Relations <- read_csv("posts/Network Data/Networks_Relations.csv")
+View(Networks_Relations)
+
+
+library(readr)
+Networks_Adjancy_Matrix <- read_csv("posts/Network Data/Networks_Adjancy_Matrix.csv")
+View(Networks_Adjancy_Matrix)
+
+
+```
+## not lets start the things 
+### starking with Network People 
+```{r}
+library(igraph)
+library(dplyr)
+
+# Assuming Networks_Relations is your edge list
+# Make sure it has 'from' and 'to' columns for relationships
+
+# Create the graph from the edge list
+network_graph <- graph_from_data_frame(d = Networks_Relations, directed = FALSE)
+
+# Add attributes from Network_people
+V(network_graph)$department <- Network_people$department[match(V(network_graph)$name, Network_people$name)]
+V(network_graph)$rank <- Network_people$rank[match(V(network_graph)$name, Network_people$name)]
+V(network_graph)$bcb520 <- Network_people$BCB520[match(V(network_graph)$name, Network_people$name)]
+
+# Plot the graph
+plot(network_graph,
+     vertex.color = ifelse(V(network_graph)$bcb520, "green", "red"),
+     vertex.label = V(network_graph)$name,
+     vertex.size = 10,
+     main = "Network Graph",
+     vertex.label.cex = 0.8)
+
+```
+### Explanation:
+
+- **Graph Creation**: `graph_from_data_frame()` creates a graph using `Networks_Relations` as the edge list.
+- **Attributes**: `match()` is used to assign attributes from `Network_people` to the vertices.
+- **Visualization**:
+  - **Vertex Color**: Nodes are colored based on whether they are enrolled in BCB520.
+  - **Labels**: Names are used as labels for vertices.
+  - **Customization**: Adjust `vertex.size`, `vertex.label.cex`, and other plot parameters to improve visualization.
+
+Ensure that your edge list (`Networks_Relations`) contains the necessary columns (`from` and `to`) for relationships between individuals. Adjust column names and paths as needed.
+
+
+
+```{r}
+
+library(igraph)
+library(dplyr)
+
+# Filter out NA names in Network_people
+filtered_people <- Network_people %>%
+  filter(!is.na(name))
+
+# Update Networks_Relations to remove edges with NA nodes
+filtered_relations <- Networks_Relations %>%
+  filter(from %in% filtered_people$name & to %in% filtered_people$name)
+
+# Create the graph from the filtered edge list
+network_graph <- graph_from_data_frame(d = filtered_relations, directed = FALSE)
+
+# Add attributes from filtered_people
+V(network_graph)$department <- filtered_people$department[match(V(network_graph)$name, filtered_people$name)]
+V(network_graph)$rank <- filtered_people$rank[match(V(network_graph)$name, filtered_people$name)]
+V(network_graph)$bcb520 <- filtered_people$BCB520[match(V(network_graph)$name, filtered_people$name)]
+
+# Use a clearer layout
+layout <- layout_with_fr(network_graph)
+
+# Plot the graph with labels to the side
+plot(network_graph,
+     layout = layout,
+     vertex.color = ifelse(V(network_graph)$bcb520, "green", "red"),
+     vertex.label = V(network_graph)$name,
+     vertex.size = 10,
+     vertex.label.cex = 0.8,
+     vertex.label.dist = 1.5,  # Distance from the vertex
+     vertex.label.degree = -pi/4,  # Position to the side
+     main = "Network Graph")
+
+```
+### Key Parameters:
+
+- **`vertex.label.dist`**: Sets the distance of the label from the vertex. Adjust the value to move the label closer or further.
+- **`vertex.label.degree`**: Sets the position of the label relative to the vertex. `-pi/2` moves the label to the side of the vertex.
+
+These adjustments should position the labels to the side of each node for better readability.
+
+## using the Network Relations 
+
+```{r}
+library(igraph)
+library(dplyr)
+
+# Assuming Networks_Relations has columns: from, to, Advisor
+
+# Create the graph from the edge list
+network_graph <- graph_from_data_frame(d = Networks_Relations, directed = TRUE)
+
+# Use edge attributes for advisor relationships
+E(network_graph)$color <- ifelse(Networks_Relations$Advisor, "blue", "gray")
+
+# Use a layout suitable for bipartite-like relationships
+layout <- layout_nicely(network_graph)
+
+# Plot the graph
+plot(network_graph,
+     layout = layout,
+     vertex.label = V(network_graph)$name,
+     vertex.size = 10,
+     vertex.label.cex = 0.8,
+     edge.color = E(network_graph)$color,
+     main = "Student-Professor Network")
+```
+```{r}
+
+# Assuming Networks_Adjancy_Matrix is already loaded and has the correct structure
+
+# Remove the 'Names' column and convert the rest to a matrix
+adjacency_matrix <- as.matrix(Networks_Adjancy_Matrix[,-1])
+
+# Set row names to the 'Names' column
+rownames(adjacency_matrix) <- Networks_Adjancy_Matrix$Names
+
+# Print the adjacency matrix
+print(adjacency_matrix)
+
+
+
+```
+### Explanation:
+
+- **Data Structure**: The `Names` column is used as row names, and the rest of the columns are converted to a matrix.
+- **Conversion**: `as.matrix()` converts the data frame to a matrix, excluding the `Names` column.
+- **Row Names**: The `Names` column is set as the row names for easy reference.
+
+This matrix represents the presence (1) or absence (0) of each activity or attribute for each person. Adjust the code if your data structure differs.
+
+```{r}
+install.packages("reshape2")
+```
+
+```{r}
+library(ggplot2)
+library(reshape2)
+
+# Assuming Networks_Adjancy_Matrix is already loaded
+
+# Remove the 'Names' column and convert the rest to a matrix
+adjacency_matrix <- as.matrix(Networks_Adjancy_Matrix[,-1])
+
+# Set row names to the 'Names' column
+rownames(adjacency_matrix) <- Networks_Adjancy_Matrix$Names
+
+# Melt the matrix for ggplot2
+melted_matrix <- melt(adjacency_matrix)
+
+# Create the heatmap
+ggplot(melted_matrix, aes(x = Var2, y = Var1, fill = value)) + 
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "Activity", y = "Person", title = "Activity Participation Heatmap") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+```{r}
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+
+# Replace 'Names' with the correct column name if different
+correct_column_name <- "name" # Update this if the column name is different
+
+# Filter out rows with no name or no responses
+filtered_data <- Networks_Adjancy_Matrix %>%
+  filter(!is.na(.data[[correct_column_name]]) & rowSums(select(., -all_of(correct_column_name))) > 0)
+
+# Order by number of "1"s
+filtered_data <- filtered_data %>%
+  mutate(TotalOnes = rowSums(select(., -all_of(correct_column_name)))) %>%
+  arrange(desc(TotalOnes))
+
+# Remove the 'Name' column and convert the rest to a matrix
+adjacency_matrix <- as.matrix(filtered_data[,-1])
+
+# Set row names to the 'Name' column
+rownames(adjacency_matrix) <- filtered_data[[correct_column_name]]
+
+# Melt the matrix for ggplot2
+melted_matrix <- melt(adjacency_matrix)
+
+# Create the heatmap
+ggplot(melted_matrix, aes(x = Var2, y = Var1, fill = value)) + 
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "Activity", y = "Person", title = "Activity Participation Heatmap") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+```{r}
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+
+# Replace 'Names' with the correct column name if different
+correct_column_name <- "name" # Update this if the column name is different
+
+# Filter out rows with no name or no responses
+filtered_data <- Networks_Adjancy_Matrix %>%
+  filter(!is.na(.data[[correct_column_name]]) & rowSums(select(., -all_of(correct_column_name))) > 0)
+
+# Summarize total likes per activity
+activity_totals <- colSums(select(filtered_data, -all_of(correct_column_name)))
+
+# Order activities by total likes
+ordered_activities <- names(sort(activity_totals, decreasing = TRUE))
+
+# Melt the matrix for ggplot2
+melted_matrix <- melt(as.matrix(filtered_data[,-1]))
+
+# Reorder activities in the heatmap
+melted_matrix$Var2 <- factor(melted_matrix$Var2, levels = ordered_activities)
+
+
+
+# Create the heatmap
+ggplot(melted_matrix, aes(x = Var2, y = Var1, fill = value)) + 
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "blue") +
+  labs(x = "Activity", y = "Person", title = "Activity Participation Heatmap") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
